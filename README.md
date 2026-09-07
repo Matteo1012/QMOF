@@ -1,35 +1,29 @@
 # QMOF Bandgap Prediction
 
-## 📄 Descrizione del Progetto
-Questo progetto si pone l'obiettivo di applicare tecniche di Machine Learning per prevedere il **bandgap** (la banda proibita) di materiali di tipo MOF (Metal-Organic Frameworks) partendo dalle loro caratteristiche strutturali, geometriche e di simmetria.
+## Project
+The goal of this project is to predict the **bandgap** of a MOF from the structural, geometric, symmetry, chemical, and energetic characteristics.
 
-I dati provengono dal database **QMOF** (Quantum MOF Database).
+## Dataset
+The data came from the **QMOF** database. 
+`qmof.csv` is the file that contains all the information we are going to use:
+- **Structural and geometric features**: `info.natoms`, `info.density`, `info.volume`, `info.pld`, `info.lcd`
+- **Symmetry features**: `info.symmetry.spacegroup`, `info.symmetry.pointgroup`
+- **Energy features**: `outputs.pbe.energy_vdw`, `energy_per_atom`, etc.
+- **Target**: `outputs.pbe.bandgap`
 
-## 📊 Il Dataset
-Il file principale utilizzato per questo progetto è `qmof.csv`. Contiene numerose informazioni estratte tramite calcoli DFT (Density Functional Theory), tra cui:
-- **Feature geometriche e strutturali**: `info.natoms`, `info.density`, `info.volume`, `info.pld`, `info.lcd`.
-- **Feature di simmetria**: `info.symmetry.spacegroup`, `info.symmetry.pointgroup`.
-- **Feature energetiche calcolate**: `outputs.pbe.energy_vdw`, energia per atomo, ecc.
-- **Target**: `outputs.pbe.bandgap`.
+## Data Preprocessing Pipeline
+Before the training of the model, we process the data through the following steps:
+1. **Feature Engineering**: Calculation of new physically relevant variables, such as energy per atom (`energy_per_atom`).
+2. **Handling Missing Values**: Removal of records containing `NaN` (null values) in both the predictive features and the target variable (`outputs.pbe.bandgap`).
+3. **One-Hot Encoding**: Conversion of textual symmetry variables (e.g., point groups and space groups) into numerical vector formats using `pd.get_dummies()` to make them compatible with machine learning algorithms.
 
-## ⚙️ Pipeline di Pre-processing dei Dati
-Prima dell'addestramento del modello, i dati grezzi vengono sottoposti a una fase di pulizia e feature engineering:
-1. **Risoluzione DtypeWarnings**: Lettura sicura del dataset CSV includendo `low_memory=False` in Pandas.
-2. **Feature Engineering**: Calcolo di nuove variabili fisicamente rilevanti, come l'energia per atomo (`energy_per_atom`).
-3. **Gestione dei Valori Mancanti**: Rimozione dei record contenenti `NaN` (valori nulli) sia nelle feature predittive che nella variabile target (`outputs.pbe.bandgap`).
-4. **One-Hot Encoding**: Conversione delle variabili di simmetria testuali (es. point group e space group) in formati vettoriali numerici tramite `pd.get_dummies()`, per renderli compatibili con gli algoritmi di machine learning.
-
-## 🛠️ Requisiti (Dependencies)
-Per eseguire il codice di questo progetto sono necessarie le seguenti librerie Python:
+## Dependencies
+To run the code, we need:
 - `pandas`
 - `numpy`
-- `scikit-learn` [Aggiungere se si usano modelli ML]
-- `matplotlib` / `seaborn` [Aggiungere se si fanno grafici]
+- `scikit-learn` *(Aggiungere se si usano modelli ML)*
+- `matplotlib` / `seaborn` *(Aggiungere se si fanno grafici)*
 
-Puoi installare i requisiti tramite pip:
-```bash
-pip install pandas numpy scikit-learn
-
-
-A.S. Rosen, S.M. Iyer, D. Ray, Z. Yao, A. Aspuru-Guzik, L. Gagliardi, J.M. Notestein, R.Q. Snurr. "Machine Learning the Quantum-Chemical Properties of Metal–Organic Frameworks for Accelerated Materials Discovery", Matter, 4, 1578-1597 (2021).
-A.S. Rosen, V. Fung, P. Huck, C.T. O'Donnell, M.K. Horton, D.G. Truhlar, K.A. Persson, J.M. Notestein, R.Q. Snurr. "High-Throughput Predictions of Metal–Organic Framework Electronic Properties: Theoretical Challenges, Graph Neural Networks, and Data Exploration," npj Comput. Mat., 8, 195 (2022).
+## Bibliography
+- A.S. Rosen, S.M. Iyer, D. Ray, Z. Yao, A. Aspuru-Guzik, L. Gagliardi, J.M. Notestein, R.Q. Snurr. "Machine Learning the Quantum-Chemical Properties of Metal–Organic Frameworks for Accelerated Materials Discovery", *Matter*, 4, 1578-1597 (2021).
+- A.S. Rosen, V. Fung, P. Huck, C.T. O'Donnell, M.K. Horton, D.G. Truhlar, K.A. Persson, J.M. Notestein, R.Q. Snurr. "High-Throughput Predictions of Metal–Organic Framework Electronic Properties: Theoretical Challenges, Graph Neural Networks, and Data Exploration", *npj Comput. Mater.*, 8, 195 (2022).
